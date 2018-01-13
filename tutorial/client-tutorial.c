@@ -25,12 +25,29 @@ static void SetInitialValues(AwaClientSession * session)
 	AwaClientSetOperation_Free(&operation);
 }
 
+static void process_temp(float temp)
+{
+    printf("has escrito %f parguelon\n", temp);
+}
+
+
+
 int main(void)
 {
+    float n1;
 	AwaClientSession * session = AwaClientSession_New();
 	AwaClientSession_Connect(session);
 	DefineHeaterObject(session);
 	SetInitialValues(session);
+
+    while (true)
+    {
+        printf("enter temperature value ");
+        scanf("%f", &n1);
+        process_temp(n1);
+    }
+
+
 	AwaClientSession_Disconnect(session);
 	AwaClientSession_Free(&session);
 
