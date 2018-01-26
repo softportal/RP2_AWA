@@ -33,18 +33,51 @@ __Usa la herramienta awa-server-list-clients para comprobar que el cliente está
 tamente registrado con el servidor (busca el objeto /1000/0
 ). ¿Cuál es la salida de dicho programa con la opción -objects ?__
 
-_Client: client1
-  /1/0     LWM2MServer
-  /2/0     LWM2MAccessControl
-  /2/1     LWM2MAccessControl
-  /2/2     LWM2MAccessControl
-  /2/3     LWM2MAccessControl
-  /1000/0 Unknown
-  /1001 Unknown
-  /1004 Unknown
-  /1005 Unknown_
+    _client: client1
+      /1/0     LWM2MServer
+      /2/0     LWM2MAccessControl
+      /2/1     LWM2MAccessControl
+      /2/2     LWM2MAccessControl
+      /2/3     LWM2MAccessControl
+      /1000/0 Unknown
+      /1001 Unknown
+      /1004 Unknown
+      /1005 Unknown_
+
+
+El cliente esta correctamente registrado pero el objeto /1000 no esta correctamente registrado.
+procedemos a su registro:
+
+Utilizando la herramienta awa-server-define:
+
+    _user-iot@VM-IOT:~$ awa-server-list-clients -o
+    Client: client00
+      /1/0     LWM2MServer
+      /2/0     LWM2MAccessControl
+      /2/1     LWM2MAccessControl
+      /2/2     LWM2MAccessControl
+      /2/3     LWM2MAccessControl
+      /1000/0  object_test
+
+Como podemos ver, podemos comprobar que nuestro objeto /1000 esta definido.
+
 
 __Por último, lee desde el nuevo recurso utilizando la herramienta de servidor awa-
 server-read y muestra la salida. De forma alternativa, es posible leer objetos comple-
 tos e instancias de objetos. ¿Cuál sería en este caso la orden a ejecutar y la salida
 correspondiente?__
+
+Ejecutaría:
+
+    awa-server-read -c client00 /1000
+
+    object_test[/1000/0]:
+        res0[/1000/0/0]:
+
+Ahora además vamos a cambiar ese valor desde el servidor:
+
+    awa-server-write -c client00 /1000/0/0=prueba
+    awa-server-read -c client00 /1000
+
+    object_test[/1000/0]:
+        res0[/1000/0/0]: prueba
